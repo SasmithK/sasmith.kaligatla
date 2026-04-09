@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meher Sasmith Kaligatla — Data & Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2e52;
+  --navy-deep: #0f1d38;
+  --navy-soft: #2a4373;
+  --grey-900: #1f2937;
+  --grey-700: #4b5563;
+  --grey-500: #6b7280;
+  --grey-300: #d1d5db;
+  --grey-100: #f3f4f6;
+  --paper: #f7f5f0;
+  --paper-warm: #efebe1;
+  --accent: #c9a961;
+  --line: rgba(26, 46, 82, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--paper);
+  color: var(--grey-900);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* paper grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(26,46,82,0.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(201,169,97,0.04) 0%, transparent 40%);
+  mix-blend-mode: multiply;
+}
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+
+/* ============ NAV ============ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(247, 245, 240, 0.82);
+  border-bottom: 1px solid var(--line);
+}
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+.brand {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+}
+.brand span { font-style: italic; font-weight: 400; color: var(--grey-500); }
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--grey-700);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 0; height: 1px;
+  background: var(--navy);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--navy); }
+.nav-links a:hover::after { width: 100%; }
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--navy); font-size: 24px; }
+
+/* ============ HERO ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 20%; right: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(26,46,82,0.08) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 60px;
+  align-items: end;
+  width: 100%;
+}
+
+.hero-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--grey-500);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.1s forwards;
+}
+.hero-meta::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--navy);
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(48px, 8vw, 108px);
+  line-height: 0.95;
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.25s forwards;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--navy-soft);
+}
+
+.hero-tag {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--grey-700);
+  max-width: 620px;
+  line-height: 1.5;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.4s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.55s forwards;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+.btn-primary {
+  background: var(--navy);
+  color: var(--paper);
+  border: 1px solid var(--navy);
+}
+.btn-primary:hover { background: var(--navy-deep); transform: translateY(-2px); box-shadow: 0 12px 30px -12px rgba(26,46,82,0.4); }
+.btn-ghost {
+  background: transparent;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+}
+.btn-ghost:hover { background: var(--navy); color: var(--paper); }
+
+.hero-side {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  padding-bottom: 20px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ SECTION BASE ============ */
+section { padding: 120px 0; position: relative; }
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--grey-500);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.section-label::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--navy);
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  margin-bottom: 60px;
+  max-width: 760px;
+}
+.section-title em { font-style: italic; color: var(--navy-soft); }
+
+/* ============ ABOUT ============ */
+.about { background: var(--paper-warm); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-body p {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--grey-900);
+  margin-bottom: 24px;
+}
+.about-body p:first-child::first-letter {
+  font-family: 'Fraunces', serif;
+  font-size: 72px;
+  font-weight: 500;
+  color: var(--navy);
+  float: left;
+  line-height: 0.85;
+  padding: 8px 12px 0 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  position: sticky;
+  top: 120px;
+}
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ============ EXPERIENCE ============ */
+.timeline { position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 140px; top: 10px; bottom: 10px;
+  width: 1px;
+  background: var(--line);
+}
+.job {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 60px;
+  padding: 36px 0;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.4s ease;
+}
+.job:hover { background: rgba(26,46,82,0.02); }
+.job:hover .job-dot { background: var(--navy); transform: scale(1.4); }
+.job-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--grey-500);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-top: 8px;
+}
+.job-dot {
+  position: absolute;
+  left: 136px; top: 48px;
+  width: 9px; height: 9px;
+  background: var(--paper);
+  border: 1px solid var(--navy);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.job-content { padding-left: 20px; }
+.job h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.job h3 em { font-style: italic; color: var(--grey-700); font-size: 22px; font-weight: 300; }
+.job-company { display: block; font-size: 14px; color: var(--grey-500); margin-bottom: 18px; }
+.job ul { list-style: none; }
+.job ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: var(--grey-700);
+  line-height: 1.6;
+}
+.job ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 11px;
+  width: 12px; height: 1px;
+  background: var(--accent);
+}
+.job ul li strong { color: var(--navy); font-weight: 600; }
+.job-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--navy);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 2px;
+  transition: gap 0.3s ease;
+}
+.job-link:hover { gap: 12px; }
+
+/* ============ SKILLS ============ */
+.skills { background: var(--navy); color: var(--paper); }
+.skills .section-label { color: rgba(247,245,240,0.6); }
+.skills .section-label::before { background: var(--accent); }
+.skills .section-title { color: var(--paper); }
+.skills .section-title em { color: var(--accent); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: rgba(247,245,240,0.08);
+  border: 1px solid rgba(247,245,240,0.08);
+}
+.skill-cat {
+  padding: 34px 36px;
+  background: var(--navy);
+  transition: background 0.3s ease;
+}
+.skill-cat:hover { background: var(--navy-deep); }
+.skill-cat h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.skill-cat p {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--paper);
+}
+
+/* ============ PROJECTS ============ */
+.projects-list { display: flex; flex-direction: column; }
+.project {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 40px;
+  align-items: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+  transition: padding 0.4s ease;
+  position: relative;
+}
+.project:last-child { border-bottom: 1px solid var(--line); }
+.project::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--paper-warm);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  z-index: -1;
+}
+.project:hover::before { transform: scaleY(1); }
+.project:hover { padding-left: 24px; padding-right: 24px; }
+.project:hover .project-arrow { transform: translate(8px, -8px) rotate(-45deg); color: var(--navy); }
+.project-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--grey-500);
+  letter-spacing: 0.1em;
+}
+.project h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 32px;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.project h3 em { font-style: italic; font-weight: 300; }
+.project-desc {
+  font-size: 15px;
+  color: var(--grey-700);
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.project-tags span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--grey-700);
+  letter-spacing: 0.05em;
+}
+.project-arrow {
+  font-size: 28px;
+  color: var(--grey-500);
+  transition: all 0.4s ease;
+}
+
+/* ============ EDUCATION / CERTS ============ */
+.edu { background: var(--paper-warm); border-top: 1px solid var(--line); }
+.edu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+.edu-block h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--grey-500);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.edu-item { margin-bottom: 28px; }
+.edu-item h5 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.edu-item p {
+  font-size: 14px;
+  color: var(--grey-700);
+  font-style: italic;
+}
+.cert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 15px;
+}
+.cert-item:last-child { border-bottom: none; }
+.cert-item span:first-child { color: var(--grey-900); }
+.cert-item a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--navy);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--navy);
+}
+
+/* ============ CONTACT ============ */
+.contact {
+  background: var(--navy);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.contact::before {
+  content: '';
+  position: absolute;
+  bottom: -200px; right: -200px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,169,97,0.1) 0%, transparent 60%);
+  border-radius: 50%;
+}
+.contact .section-label { color: rgba(247,245,240,0.6); }
+.contact .section-label::before { background: var(--accent); }
+.contact h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1;
+  color: var(--paper);
+  letter-spacing: -0.02em;
+  margin-bottom: 50px;
+  max-width: 900px;
+}
+.contact h2 em { font-style: italic; color: var(--accent); }
+.contact-email {
+  display: inline-block;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(24px, 3vw, 36px);
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(247,245,240,0.3);
+  padding-bottom: 8px;
+  margin-bottom: 50px;
+  transition: border-color 0.3s ease;
+}
+.contact-email:hover { border-bottom-color: var(--accent); }
+.contact-links {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding-top: 40px;
+  border-top: 1px solid rgba(247,245,240,0.15);
+}
+.contact-links a {
+  color: rgba(247,245,240,0.75);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.contact-links a:hover { color: var(--accent); }
+.contact-links a::after { content: '↗'; font-size: 14px; }
+
+footer {
+  background: var(--navy-deep);
+  color: rgba(247,245,240,0.5);
+  padding: 30px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+/* ============ SCROLL REVEAL ============ */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .container { padding: 0 24px; }
+  .menu-toggle { display: block; }
+  .nav-links {
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: var(--paper);
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-120%);
+    transition: transform 0.4s ease;
+  }
+  .nav-links.open { transform: translateY(0); }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-side { display: none; }
+  .about-grid, .edu-grid { grid-template-columns: 1fr; gap: 50px; }
+  .stats { position: static; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .timeline::before { left: 6px; }
+  .job { grid-template-columns: 1fr; gap: 12px; padding-left: 28px; }
+  .job-dot { left: 2px; top: 14px; }
+  .job-content { padding-left: 0; }
+  .project { grid-template-columns: 40px 1fr; gap: 20px; }
+  .project-arrow { display: none; }
+  section { padding: 80px 0; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="brand">Meher Sasmith <span>— portfolio</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-meta">Kansas City · Available for relocation</div>
+      <h1>Meher<br>Sasmith <em>Kaligatla.</em></h1>
+      <p class="hero-tag">Data &amp; Business Analyst turning messy datasets into decisions — 4.5+ years across analytics, cloud engineering, and machine learning.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View Work →</a>
+        <a href="mailto:sasmithkaligatla@gmail.com" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-side">/ portfolio — 2026</div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-label">01 — About</div>
+    <h2 class="section-title reveal">Detail-focused analyst with a bias toward <em>clarity</em>, structure, and measurable outcomes.</h2>
+    <div class="about-grid">
+      <div class="stats reveal">
+        <div>
+          <div class="stat-num">4.5+</div>
+          <div class="stat-label">Years<br>Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">90%</div>
+          <div class="stat-label">Faster<br>Dashboards</div>
+        </div>
+        <div>
+          <div class="stat-num">75%</div>
+          <div class="stat-label">Fewer Prod<br>Incidents</div>
+        </div>
+        <div>
+          <div class="stat-num">30%</div>
+          <div class="stat-label">Ops Cost<br>Reduction</div>
+        </div>
+      </div>
+      <div class="about-body reveal">
+        <p>I design and ship end-to-end data solutions — from cleaning and reconciling large-scale datasets to building star-schema warehouses, orchestrating ETL pipelines, and producing dashboards stakeholders actually use.</p>
+        <p>My work sits at the intersection of SQL, Python, and the cloud. I've built reporting platforms in Power BI and Tableau, engineered pipelines on AWS, Azure, and GCP, and recently designed a production-ready RAG system using LLaMA-3 and pgvector.</p>
+        <p>What I care about most: data integrity, clean documentation, and translating business questions into queries that actually answer them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">02 — Experience</div>
+    <h2 class="section-title reveal">Selected <em>work</em> across consulting, research, and operations.</h2>
+    <div class="timeline">
+
+      <div class="job reveal">
+        <div class="job-date">Mar 2024 — Feb 2026</div>
+        <div class="job-dot"></div>
+        <div class="job-content">
+          <h3>Data Consultant <em>— Xsai Consulting</em></h3>
+          <span class="job-company">Full data lifecycle · Star-schema warehousing · Power BI</span>
+          <ul>
+            <li>Designed and implemented a star-schema data warehouse and automated reporting with APIs, SQL, and Power BI — increasing dashboard refresh speed by <strong>90%</strong>.</li>
+            <li>Built ETL pipelines and leveraged OLAP (SSAS) for multi-dimensional analysis across enterprise data sources.</li>
+            <li>Developed and deployed SSRS reports, replacing manual workflows with real-time analytics for end users.</li>
+            <li>Debugged full-stack issues and improved reliability, driving <strong>75% fewer production incidents</strong>.</li>
+            <li>Delivered business insights via predictive modeling and KPI-driven visualizations integrated with QuickBooks.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="job-date">Apr 2025 — Jul 2025</div>
+        <div class="job-dot"></div>
+        <div class="job-content">
+          <h3>LLM Data Analyst <em>— UMKC Research</em></h3>
+          <span class="job-company">Federated learning · Robust aggregation · Non-IID datasets</span>
+          <ul>
+            <li>Designed and implemented a <strong>Federated Learning pipeline</strong> (server–client architecture) using Python, PyTorch, and sockets.</li>
+            <li>Applied Trimmed Mean aggregation to counter data and model poisoning attacks, achieving resilient distributed training on Non-IID datasets.</li>
+          </ul>
+          <a href="https://github.com/SasmithM/Federated-Learning" target="_blank" class="job-link">View Repository →</a>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="job-date">Jan 2023 — Dec 2024</div>
+        <div class="job-dot"></div>
+        <div class="job-content">
+          <h3>Business Data Analyst <em>— Sodexo (UMKC)</em></h3>
+          <span class="job-company">SQL · Power BI · AWS · Event operations</span>
+          <ul>
+            <li>Cleaned and managed <strong>79% of operational data</strong> for reporting, billing, and event strategy optimization.</li>
+            <li>Analyzed sales data to drive decisions and streamlined event operations through real-time Power BI dashboards.</li>
+            <li>Automated manual processes and supported data infrastructure across departments using AWS and Google Cloud.</li>
+            <li>Partnered with stakeholders to identify process improvements leading to a <strong>30% reduction in operational costs</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job reveal">
+        <div class="job-date">Mar 2020 — Nov 2023</div>
+        <div class="job-dot"></div>
+        <div class="job-content">
+          <h3>Student Assistant — Data Analyst <em>— VIT</em></h3>
+          <span class="job-company">BigQuery · ETL frameworks · Test Data Management</span>
+          <ul>
+            <li>Developed and optimized ETL frameworks using BigQuery with advanced partitioning, clustering, and nested queries.</li>
+            <li>Built Tableau, Power BI, and Python analyses that improved manual reporting efficiency across teams.</li>
+            <li>Designed a Test Data Management (TDM) strategy with automation, version control, and reconciliation scripts.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="section-label">03 — Capabilities</div>
+    <h2 class="section-title reveal">The <em>toolkit</em> behind the work.</h2>
+    <div class="skills-grid">
+      <div class="skill-cat reveal"><h4>Languages & Query</h4><p>SQL (Advanced), T-SQL, Python, PySpark, Bash, VBA, C#, Java</p></div>
+      <div class="skill-cat reveal"><h4>Analytics & BI</h4><p>Power BI, Tableau, SSRS, Google Data Studio, Excel, Jupyter, SAS</p></div>
+      <div class="skill-cat reveal"><h4>Cloud Platforms</h4><p>AWS (EC2, S3, Redshift, Glue, Lambda), Azure (Data Factory, Databricks), GCP (BigQuery, Dataflow)</p></div>
+      <div class="skill-cat reveal"><h4>Data Engineering</h4><p>ETL/ELT, Star Schema Design, Data Modeling, Batch & Streaming Ingestion</p></div>
+      <div class="skill-cat reveal"><h4>Databases</h4><p>SQL Server, PostgreSQL, MySQL, MongoDB, Snowflake, BigQuery, Redshift, Cassandra</p></div>
+      <div class="skill-cat reveal"><h4>Orchestration & DevOps</h4><p>Apache Airflow, Docker, Kubernetes, Git, GitLab CI/CD, Jenkins, RESTful APIs</p></div>
+      <div class="skill-cat reveal"><h4>AI / ML</h4><p>LLMs, Retrieval-Augmented Generation (RAG), PyTorch, TensorFlow, NLP, Deep Learning</p></div>
+      <div class="skill-cat reveal"><h4>Standards & Governance</h4><p>HIPAA, HL7, GDPR, CCPA, Agile / SDLC, Data Governance</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">04 — Projects</div>
+    <h2 class="section-title reveal">Things I've <em>built</em> end-to-end.</h2>
+    <div class="projects-list">
+
+      <a href="https://github.com/SasmithM/Federated-Learning" target="_blank" class="project reveal">
+        <div class="project-num">/ 01</div>
+        <div>
+          <h3>Federated Learning <em>Pipeline</em></h3>
+          <p class="project-desc">Distributed ML training framework with server–client architecture and robust Trimmed Mean aggregation to defend against data and model poisoning on Non-IID datasets.</p>
+          <div class="project-tags"><span>Python</span><span>PyTorch</span><span>Sockets</span><span>Distributed Systems</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="#" class="project reveal" onclick="return false;">
+        <div class="project-num">/ 02</div>
+        <div>
+          <h3>Insurance AI Assistant <em>— RAG System</em></h3>
+          <p class="project-desc">Full-stack Retrieval-Augmented Generation system for insurance agents. Built ingestion → chunking → embeddings → pgvector pipeline with LLaMA-3 running on-prem via Ollama. Containerized for AWS ECS/EKS.</p>
+          <div class="project-tags"><span>Python</span><span>Flask</span><span>PostgreSQL</span><span>pgvector</span><span>LLaMA-3</span><span>Docker</span><span>AWS</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="#" class="project reveal" onclick="return false;">
+        <div class="project-num">/ 03</div>
+        <div>
+          <h3>Commerce Bank <em>Web Application</em></h3>
+          <p class="project-desc">SSRS reports, SQL models, and Power BI dashboards for real-time business reporting. Designed ML model lifecycles and improved backend data orchestration. UMKC coursework under Prof. Syed Jawad Hussain Shah.</p>
+          <div class="project-tags"><span>SSRS</span><span>SQL</span><span>Power BI</span><span>ML Ops</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+      <a href="#" class="project reveal" onclick="return false;">
+        <div class="project-num">/ 04</div>
+        <div>
+          <h3>Student Quiz <em>Grading System</em></h3>
+          <p class="project-desc">Interactive web application automating grading workflows and analytics visualization. Implemented error handling, scoring rules, and performance reporting dashboards.</p>
+          <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Analytics</span></div>
+        </div>
+        <div class="project-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTS -->
+<section class="edu">
+  <div class="container">
+    <div class="section-label">05 — Background</div>
+    <h2 class="section-title reveal">Education &amp; <em>credentials</em>.</h2>
+    <div class="edu-grid">
+      <div class="edu-block reveal">
+        <h4>Education</h4>
+        <div class="edu-item">
+          <h5>B.S. Computer Science</h5>
+          <p>University of Missouri–Kansas City · DISA Scholarship · Dean's List</p>
+        </div>
+        <div class="edu-item">
+          <h5>B.Tech Software Engineering</h5>
+          <p>Vellore Institute of Technology, India</p>
+        </div>
+      </div>
+      <div class="edu-block reveal">
+        <h4>Certifications & Awards</h4>
+        <div class="cert-item">
+          <span>WorldQuant — Applied Data Science</span>
+          <span></span>
+        </div>
+        <div class="cert-item">
+          <span>DataCamp — Data Analyst in Power BI</span>
+          <a href="https://www.credly.com/badges/51f83249-ae85-442a-b9c4-f50ca04948c6" target="_blank">View Badge ↗</a>
+        </div>
+        <div class="cert-item">
+          <span>Dean's List Recipient</span>
+          <span></span>
+        </div>
+        <div class="cert-item">
+          <span>TechEden '21 CodeChef — Technical Excellence</span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-label">06 — Contact</div>
+    <h2 class="reveal">Let's build something <em>worth measuring.</em></h2>
+    <a href="mailto:sasmithkaligatla@gmail.com" class="contact-email reveal">sasmithkaligatla@gmail.com</a>
+    <div class="contact-links reveal">
+      <a href="https://github.com/SasmithM" target="_blank">GitHub</a>
+      <a href="https://www.credly.com/badges/51f83249-ae85-442a-b9c4-f50ca04948c6" target="_blank">Credly</a>
+      <a href="tel:+19132956666">+1 913 295 6666</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>© 2026 Meher Sasmith Kaligatla</div>
+    <div>Designed & built with care · Kansas City, MO</div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Close mobile menu on link click
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navLinks').classList.remove('open');
+}));
+</script>
+
+</body>
+</html>
